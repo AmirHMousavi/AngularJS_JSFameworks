@@ -49,10 +49,10 @@
                 </div>
                 <div class="col-xs-12 col-sm-8">
                     <p style="padding:5px"></p>
-                     <p>SortBy: <input type="text" name="input" ng-model="ddCtrl.dish.sortProperty"></p>
+                     <p>SortBy: <input type="text" name="input" ng-model="ddCtrl.dish.sortProperty" ></p>
                 </div>
                 <div class="col-xs-12">
-                <blockquote ng-repeat="comment in ddCtrl.dish.comments | orderBy:{{ddCtrl.dish.sortProperty}}">
+                <blockquote ng-repeat="comment in ddCtrl.dish.comments | orderBy:ddCtrl.dish.sortProperty">
                     <p>{{comment.rating}} Stars</p>
                     <p>{{comment.comment}}</p>
                     <footer>{{comment.author}} ,<cite title="Source Title">{{comment.date| date:'mediumDate'}}</cite></footer>
