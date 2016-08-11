@@ -90,7 +90,7 @@ $scope.toggleDetails = function() {
 .controller('FeedbackController', ['$scope', function($scope) {
      $scope.sendFeedback = function() {
                 console.log($scope.feedback);
-                if ($scope.feedback.agree && ($scope.feedback.mychannel == "")&& !$scope.feedback.mychannel){
+                if ($scope.feedback.agree && ($scope.feedback.mychannel === "")&& !$scope.feedback.mychannel){
                     $scope.invalidChannelSelection = true;
                     console.log('incorrect');
                 }
@@ -111,12 +111,13 @@ $scope.toggleDetails = function() {
 
  .controller('DishDetailController', ['$scope', function($scope) {
 
-            var dish={
+            var theDish={
                           name:'Uthapizza',
                           image: 'images/uthapizza.png',
                           category: 'mains', 
                           label:'Hot',
                           price:'4.99',
+                          sortProperty:'-rating',
                           description:'A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.',
                            comments: [
                                {
@@ -153,26 +154,27 @@ $scope.toggleDetails = function() {
                            ]
                     };
             
-            $scope.dish = dish;
+            $scope.theDish = theDish;
             
         }])
 
-        .controller('DishCommentController', ['$scope', function($scope) {
-            
+    .controller('DishCommentController', ['$scope', function($scope) {
             //Step 1: Create a JavaScript object to hold the comment from the form
-            
+            $scope.theComment={rating:'5',comment:"",author:"",date:""};
+                
             $scope.submitComment = function () {
                 
+                
                 //Step 2: This is how you record the date
-                "The date property of your JavaScript object holding the comment" = new Date().toISOString();
+                $scope.theComment.date = new Date().toISOString();
                 
                 // Step 3: Push your comment into the dish's comment array
-                $scope.dish.comments.push("Your JavaScript Object holding the comment");
+                $scope.theDish.comments.push($scope.theComment);
                 
                 //Step 4: reset your form to pristine
-                
+                $scope.commentForm.$setPristine();
+                console.log($scope.theComment);
                 //Step 5: reset your JavaScript object that holds your comment
-            }
-        }])
-
-;
+                $scope.theComment={rating:'5',comment:"",author:"",date:""};
+            };
+        }]);
