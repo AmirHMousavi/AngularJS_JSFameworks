@@ -32,14 +32,14 @@
             <div class="col-xs-12">
                 <div class="media">
                     <a class="media-left" href="#">
-                    <img class="media-object" src={{theDish.image}} alt="pizza">    
+                    <img class="media-object" src={{dish.image}} alt="pizza">    
                     </a>
                     <div class="media-body">
-                        <h2 class="media-heading">{{theDish.name}}
-                            <span class="label label-danger">{{theDish.label}}</span>
-                            <span class="badge">{{theDish.price | currency}} </span>    
+                        <h2 class="media-heading">{{dish.name}}
+                            <span class="label label-danger">{{dish.label}}</span>
+                            <span class="badge">{{dish.price | currency}} </span>    
                         </h2>
-                        <p>{{theDish.description}}</p>
+                        <p>{{dish.description}}</p>
                     </div>
                 </div>
                 
@@ -47,10 +47,10 @@
             <div class="col-xs-9 col-xs-offset-1">
                 <div>
                     <h3 class="col-xs-4">Customer Comments</h3>
-                    <p class="col-xs-8" style="padding:16px">sort by: <input type="text" name="input" ng-model="theDish.sortProperty" ></p>
+                    <p class="col-xs-8" style="padding:20px">sort by: <input type="text" name="input" ng-model="sort" ></p>
                 </div>
                 <div class="col-xs-12">
-                    <blockquote ng-repeat="comment in theDish.comments | orderBy:theDish.sortProperty">
+                    <blockquote ng-repeat="comment in dish.comments | orderBy:sort">
                         <p>{{comment.rating}} Stars</p>
                         <p>{{comment.comment}}</p>
                         <footer>{{comment.author}} ,<cite title="Source Title">{{comment.date| date:'mediumDate'}}</cite></footer>
@@ -115,6 +115,8 @@
 <!-- build:js scripts/main.js -->
     <script src="../bower_components/angular/angular.min.js"></script>
     <script src="scripts/app.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/services.js"></script>
 <!-- endbuild -->
 
 </body>
