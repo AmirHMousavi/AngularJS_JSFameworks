@@ -82,7 +82,7 @@
             </div>
         </header>
 
-        <ng-include src="'menu.html'"></ng-include>
+<ng-view  onload=""  $autoscroll=""></ng-view>
 
         <footer class="row-footer">
             <div class="container">
@@ -149,6 +149,7 @@
 
         <!-- build:js scripts/main.js -->
         <script src="../bower_components/angular/angular.min.js"></script>
+        <script src="../bower_components/angular-route/angular-route.min.js"></script>
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers.js"></script>
         <script src="scripts/services.js"></script>

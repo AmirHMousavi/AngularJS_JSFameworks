@@ -78,9 +78,9 @@ angular.module('confusionApp')
 
 // dishdetail.html controllers
 
-.controller('DishDetailController', ['$scope', 'menuService', function($scope, menuService) {
+.controller('DishDetailController', ['$scope','$routeParams', 'menuService', function($scope,$routeParams, menuService) {
 
-    $scope.dish = menuService.getDish(2);
+    $scope.dish = menuService.getDish(parseInt($routeParams.id,10));
     var sort = '-rating';
     $scope.sort = sort;
 
