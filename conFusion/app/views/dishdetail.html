@@ -1,8 +1,11 @@
 <div class="container" ng-controller="DishDetailController">
     <div class="row row-content">
         <div class="col-xs-12">
+            <button class="btn btn-xs btn-primary pull-right" type="button" ui-sref="app.menu">
+                <span class="glyphicon glyphicon-arrow-left"></span>Back to Menu
+            </button>
             <div class="media">
-                <a class="media-left" href="#">
+                <a class="media-left" ui-sref="#">
                     <img class="media-object" src={{dish.image}} alt="pizza">
                 </a>
                 <div class="media-body">
