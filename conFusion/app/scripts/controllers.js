@@ -7,14 +7,11 @@ angular.module('confusionApp')
         $scope.filtText = '';
         $scope.showDetails = false;
         $scope.dishes = menuService.getDishes();
-
         $scope.toggleDetails = function() {
             $scope.showDetails = !$scope.showDetails;
         };
-
         $scope.select = function(setTab) {
             $scope.tab = setTab;
-
             if (setTab === 2) {
                 $scope.filtText = "appetizer";
             } else if (setTab === 3) {
@@ -25,7 +22,6 @@ angular.module('confusionApp')
                 $scope.filtText = "";
             }
         };
-
         $scope.isSelected = function(checkTab) {
             return ($scope.tab === checkTab);
         };
@@ -33,86 +29,85 @@ angular.module('confusionApp')
 
 // contactus.html controllers
 .controller('ContactController', ['$scope', function($scope) {
-
-    $scope.feedback = {
-        mychannel: "",
-        firstName: "",
-        lastName: "",
-        agree: false,
-        email: ""
-    };
-    var channels = [{
-        value: "tel",
-        label: "Tel."
-    }, {
-        value: "Email",
-        label: "Email"
-    }];
-    $scope.channels = channels;
-    $scope.invalidChannelSelection = false;
-}])
-
-.controller('FeedbackController', ['$scope', function($scope) {
-    $scope.sendFeedback = function() {
-        console.log($scope.feedback);
-        if ($scope.feedback.agree && ($scope.feedback.mychannel === "") && !$scope.feedback.mychannel) {
-            $scope.invalidChannelSelection = true;
-            console.log('incorrect');
-        } else {
-            $scope.invalidChannelSelection = false;
-            $scope.feedback = {
-                mychannel: "",
-                firstName: "",
-                lastName: "",
-                agree: false,
-                email: ""
-            };
-            $scope.feedback.mychannel = "";
-
-            $scope.feedbackForm.$setPristine();
+        $scope.feedback = {
+            mychannel: "",
+            firstName: "",
+            lastName: "",
+            agree: false,
+            email: ""
+        };
+        var channels = [{
+            value: "tel",
+            label: "Tel."
+        }, {
+            value: "Email",
+            label: "Email"
+        }];
+        $scope.channels = channels;
+        $scope.invalidChannelSelection = false;
+    }])
+    // Feedback form controller
+    .controller('FeedbackController', ['$scope', function($scope) {
+        $scope.sendFeedback = function() {
             console.log($scope.feedback);
-        }
-    };
-
-}])
-
-// dishdetail.html controllers
-
-.controller('DishDetailController', ['$scope','$stateParams', 'menuService', function($scope,$stateParams, menuService) {
-
-    $scope.dish = menuService.getDish(parseInt($stateParams.id,10));
-    var sort = '-rating';
-    $scope.sort = sort;
-
-}])
-
-.controller('DishCommentController', ['$scope', function($scope) {
-    //Step 1: Create a JavaScript object to hold the comment from the form
-    $scope.theComment = {
-        rating: '5',
-        comment: "",
-        author: "",
-        date: ""
-    };
-
-    $scope.submitComment = function() {
-
-
-        //Step 2: This is how you record the date
-        $scope.theComment.date = new Date().toISOString();
-
-        // Step 3: Push your comment into the dish's comment array
-        $scope.dish.comments.push($scope.theComment);
-
-        //Step 4: reset your form to pristine
-        $scope.commentForm.$setPristine();
-        console.log($scope.theComment);
-        //Step 5: reset your JavaScript object that holds your comment
+            if ($scope.feedback.agree && ($scope.feedback.mychannel === "") && !$scope.feedback.mychannel) {
+                $scope.invalidChannelSelection = true;
+                console.log('incorrect');
+            } else {
+                $scope.invalidChannelSelection = false;
+                $scope.feedback = {
+                    mychannel: "",
+                    firstName: "",
+                    lastName: "",
+                    agree: false,
+                    email: ""
+                };
+                $scope.feedback.mychannel = "";
+                $scope.feedbackForm.$setPristine();
+                console.log($scope.feedback);
+            }
+        };
+    }])
+    // dishdetail.html controllers
+    .controller('DishDetailController', ['$scope', '$stateParams', 'menuService', function($scope, $stateParams, menuService) {
+        $scope.dish = menuService.getDish(parseInt($stateParams.id, 10));
+        var sort = '-rating';
+        $scope.sort = sort;
+    }])
+    // commentForm controller
+    .controller('DishCommentController', ['$scope', function($scope) {
+        // Step 1: Create a JavaScript object to hold the comment from the form
         $scope.theComment = {
             rating: '5',
             comment: "",
             author: "",
             date: ""
         };
-    };
-}]);
+
+        $scope.submitComment = function() {
+            // Step 2: This is how you record the date
+            $scope.theComment.date = new Date().toISOString();
+            // Step 3: Push your comment into the dish's comment array
+            $scope.dish.comments.push($scope.theComment);
+            // Step 4: reset your form to pristine
+            $scope.commentForm.$setPristine();
+            // Step 5: reset your JavaScript object that holds your comment
+            $scope.theComment = {
+                rating: '5',
+                comment: "",
+                author: "",
+                date: ""
+            };
+        };
+    }])
+    // implement the IndexController and About Controller here
+    .controller('IndexController', ['$scope', '$stateParams', 'menuService', function($scope, $stateParams, menuService) {
+        $scope.promotions = menuService.getPromotions();
+        $scope.promotion = menuService.getPromotion($stateParams.id, 10);
+        $scope.featuredDish=menuService.getDish(0);
+
+    }])
+    .controller('AboutController', ['$scope', '$stateParams', 'corporateService', function($scope, $stateParams, corporateService) {
+        $scope.leaders = corporateService.getLeaders();
+        $scope.leader=corporateService.getLeader(0);
+    }]);
