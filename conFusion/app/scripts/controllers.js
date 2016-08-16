@@ -6,7 +6,12 @@ angular.module('confusionApp')
         $scope.tab = 1;
         $scope.filtText = '';
         $scope.showDetails = false;
-        $scope.dishes = menuService.getDishes();
+        $scope.dishes = [];
+        menuService.getDishes().then(
+            function(response) {
+                $scope.dishes = response.data;
+            }
+        );
         $scope.toggleDetails = function() {
             $scope.showDetails = !$scope.showDetails;
         };
@@ -70,7 +75,13 @@ angular.module('confusionApp')
     }])
     // dishdetail.html controllers
     .controller('DishDetailController', ['$scope', '$stateParams', 'menuService', function($scope, $stateParams, menuService) {
-        $scope.dish = menuService.getDish(parseInt($stateParams.id, 10));
+        $scope.dish = {};
+        menuService.getDish(parseInt($stateParams.id, 10)).then(
+            function(response) {
+                $scope.dish = response.data;
+                $scope.showDish = true;
+            }
+        );
         var sort = '-rating';
         $scope.sort = sort;
     }])
@@ -101,13 +112,19 @@ angular.module('confusionApp')
         };
     }])
     // implement the IndexController and About Controller here
-    .controller('IndexController', ['$scope', '$stateParams', 'menuService', function($scope, $stateParams, menuService) {
-        $scope.promotions = menuService.getPromotions();
-        $scope.promotion = menuService.getPromotion($stateParams.id, 10);
-        $scope.featuredDish=menuService.getDish(0);
+    .controller('IndexController', ['$scope', '$stateParams', 'menuService', 'corporateService', function($scope, $stateParams, menuService, corporateService) {
+        $scope.leader = corporateService.getLeader(3);
+        $scope.promotion = menuService.getPromotion(0);
+        $scope.featuredDish = {};
+        menuService.getDish(0).then(
+            function(response) {
+                $scope.featuredDish = response.data;
+                $scope.showDish = true;
+            }
+        );
 
     }])
     .controller('AboutController', ['$scope', '$stateParams', 'corporateService', function($scope, $stateParams, corporateService) {
         $scope.leaders = corporateService.getLeaders();
-        $scope.leader=corporateService.getLeader(0);
+
     }]);

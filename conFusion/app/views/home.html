@@ -9,7 +9,7 @@
             <ul class="media-list">
                 <li class="media">
                     <div class="media-left media-middle">
-                        <a ui-sref="app.dishdetails({id:featuredDish._id})">
+                        <a ui-sref="app.dishdetails({id:featuredDish.id})">
                             <img class="media-object img-thumbnail" ng-src={{featuredDish.image}} alt="Uthappizza">
                         </a>
                     </div>
@@ -33,7 +33,7 @@
             <h3 align=center>This Month's Promotions</h3>
         </div>
         <div class="col-xs-12 col-sm-9">
-            <ul class="media-list" ng-repeat="promotion in promotions">
+            <ul class="media-list">
                 <li class="media">
                     <div class="media-body">
                         <h2 class="media-heading">{{promotion.name}}
