@@ -8,15 +8,14 @@ angular.module('confusionApp')
         $scope.showDetails = false;
         $scope.showMenu = false;
         $scope.message = "Loading ...";
-        $scope.dishes = [];
-        menuService.getDishes().then(
-            function(response) {
-                $scope.dishes = response.data;
+        $scope.dishes = menuService.getDishes().query(function(response) {
+                $scope.dishes = response;
                 $scope.showMenu = true;
             },
             function(response) {
                 $scope.message = "Error: " + response.status + " " + response.statusText;
             }
+
         );
         $scope.toggleDetails = function() {
             $scope.showDetails = !$scope.showDetails;
@@ -83,21 +82,23 @@ angular.module('confusionApp')
     .controller('DishDetailController', ['$scope', '$stateParams', 'menuService', function($scope, $stateParams, menuService) {
         $scope.showDish = false;
         $scope.message = "Loading ...";
-        $scope.dish = {};
-        menuService.getDish(parseInt($stateParams.id, 10)).then(
+        $scope.dish = menuService.getDishes().get({
+            id: parseInt($stateParams.id, 10)
+        }).$promise.then(
             function(response) {
-                $scope.dish = response.data;
+                $scope.dish = response;
                 $scope.showDish = true;
             },
             function(response) {
                 $scope.message = "Error: " + response.status + " " + response.statusText;
             }
         );
+
         var sort = '-rating';
         $scope.sort = sort;
     }])
     // commentForm controller
-    .controller('DishCommentController', ['$scope', function($scope) {
+    .controller('DishCommentController', ['$scope', 'menuService', function($scope, menuService) {
         // Step 1: Create a JavaScript object to hold the comment from the form
         $scope.theComment = {
             rating: '5',
@@ -111,6 +112,9 @@ angular.module('confusionApp')
             $scope.theComment.date = new Date().toISOString();
             // Step 3: Push your comment into the dish's comment array
             $scope.dish.comments.push($scope.theComment);
+            menuService.getDishes().update({
+                id: $scope.dish.id
+            }, $scope.dish);
             // Step 4: reset your form to pristine
             $scope.commentForm.$setPristine();
             // Step 5: reset your JavaScript object that holds your comment
@@ -128,10 +132,11 @@ angular.module('confusionApp')
         $scope.message = "Loading ...";
         $scope.leader = corporateService.getLeader(3);
         $scope.promotion = menuService.getPromotion(0);
-        $scope.featuredDish = {};
-        menuService.getDish(0).then(
+        $scope.featuredDish = menuService.getDishes().get({
+            id: 0
+        }).$promise.then(
             function(response) {
-                $scope.featuredDish = response.data;
+                $scope.featuredDish = response;
                 $scope.showDish = true;
             },
             function(response) {
