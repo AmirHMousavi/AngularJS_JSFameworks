@@ -1,5 +1,8 @@
 <div class="container" ng-controller="DishDetailController">
-    <div class="row row-content">
+    <div class="col-xs-12" ng-if="!showDish">
+        <h3>{{message}}</h3>
+    </div>
+    <div class="row row-content" ng-if="showDish">
         <div class="col-xs-12">
             <button class="btn btn-xs btn-primary pull-right" type="button" ui-sref="app.menu">
                 <span class="glyphicon glyphicon-arrow-left"></span>Back to Menu

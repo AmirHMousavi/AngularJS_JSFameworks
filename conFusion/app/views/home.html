@@ -5,8 +5,10 @@
             <h3 align=center>Our Lipsmacking Culinary Creations</h3>
         </div>
         <div class="col-xs-12 col-sm-9 col-sm-pull-3">
-
-            <ul class="media-list">
+            <div ng-if="!showDish">
+                <h3>{{message}}</h3>
+            </div>
+            <ul class="media-list" ng-if="showDish">
                 <li class="media">
                     <div class="media-left media-middle">
                         <a ui-sref="app.dishdetails({id:featuredDish.id})">
@@ -58,22 +60,22 @@
             <h3 align=center>Meet our Culinary Specialists</h3>
         </div>
         <div class="col-xs-12 col-sm-9 col-sm-pull-3">
-          <ul class="media-list">
-              <li class="media">
-                  <div class="media-left media-middle">
-                      <a ui-sref="app.aboutus">
-                          <img class="media-object img-thumbnail" ng-src={{leader.image}} alt="Uthappizza">
-                      </a>
-                  </div>
-                  <div class="media-body">
-                      <h2 class="media-heading">{{leader.name}}
-                          <span style="font-size:14px">{{leader.designation}}</span>
-                      </h2>
-                      <p>{{leader.description}}</p>
+            <ul class="media-list">
+                <li class="media">
+                    <div class="media-left media-middle">
+                        <a ui-sref="app.aboutus">
+                            <img class="media-object img-thumbnail" ng-src={{leader.image}} alt="Uthappizza">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">{{leader.name}}
+                            <span style="font-size:14px">{{leader.designation}}</span>
+                        </h2>
+                        <p>{{leader.description}}</p>
 
-                  </div>
-              </li>
-          </ul>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
