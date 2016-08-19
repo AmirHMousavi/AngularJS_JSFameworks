@@ -94,7 +94,7 @@ angular.module('confusionApp')
             }
         );
 
-        var sort = '-rating';
+        var sort = '';
         $scope.sort = sort;
     }])
     // commentForm controller
