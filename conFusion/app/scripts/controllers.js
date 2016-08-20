@@ -44,7 +44,8 @@ angular.module('confusionApp')
             firstName: "",
             lastName: "",
             agree: false,
-            email: ""
+            email: "",
+            date: ""
         };
         var channels = [{
             value: "tel",
@@ -57,24 +58,27 @@ angular.module('confusionApp')
         $scope.invalidChannelSelection = false;
     }])
     // Feedback form controller
-    .controller('FeedbackController', ['$scope', function($scope) {
+    .controller('FeedbackController', ['$scope', 'feedbackService', function($scope, feedbackService) {
+        $scope.feedbacks = feedbackService.getFeedbacks().query(function(response) {
+            $scope.feedbacks = response;
+        });
         $scope.sendFeedback = function() {
-            console.log($scope.feedback);
             if ($scope.feedback.agree && ($scope.feedback.mychannel === "") && !$scope.feedback.mychannel) {
                 $scope.invalidChannelSelection = true;
-                console.log('incorrect');
             } else {
                 $scope.invalidChannelSelection = false;
+                $scope.feedback.date = new Date().toISOString();
+                feedbackService.getFeedbacks().save($scope.feedback);
+
+                $scope.feedbackForm.$setPristine();
                 $scope.feedback = {
                     mychannel: "",
                     firstName: "",
                     lastName: "",
                     agree: false,
-                    email: ""
+                    email: "",
+                    date: ""
                 };
-                $scope.feedback.mychannel = "";
-                $scope.feedbackForm.$setPristine();
-                console.log($scope.feedback);
             }
         };
     }])
@@ -129,9 +133,32 @@ angular.module('confusionApp')
     // implement the IndexController and About Controller here
     .controller('IndexController', ['$scope', '$stateParams', 'menuService', 'corporateService', function($scope, $stateParams, menuService, corporateService) {
         $scope.showDish = false;
+        $scope.showLeader = false;
+        $scope.showPromotion = false;
         $scope.message = "Loading ...";
-        $scope.leader = corporateService.getLeader(3);
-        $scope.promotion = menuService.getPromotion(0);
+
+        $scope.leader = corporateService.getLeaders().get({
+            id: 3
+        }).$promise.then(
+            function(response) {
+                $scope.leader = response;
+                $scope.showLeader = true;
+            },
+            function(response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            }
+        );
+        $scope.promotion = menuService.getPromotions().get({
+            id: 0
+        }).$promise.then(
+            function(response) {
+                $scope.promotion = response;
+                $scope.showPromotion = true;
+            },
+            function(response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            }
+        );
         $scope.featuredDish = menuService.getDishes().get({
             id: 0
         }).$promise.then(
@@ -146,6 +173,15 @@ angular.module('confusionApp')
 
     }])
     .controller('AboutController', ['$scope', '$stateParams', 'corporateService', function($scope, $stateParams, corporateService) {
-        $scope.leaders = corporateService.getLeaders();
+        $scope.showLeaders = false;
+        $scope.message = "Loading ...";
+        $scope.leaders = corporateService.getLeaders().query(function(response) {
+                $scope.leaders = response;
+                $scope.showLeaders = true;
+            },
+            function(response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            }
+        );
 
     }]);
